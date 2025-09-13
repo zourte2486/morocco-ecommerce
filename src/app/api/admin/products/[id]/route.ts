@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { uploadMultipleToCloudinary } from '@/lib/cloudinary';
 import { uploadMultipleToSupabaseStorage } from '@/lib/supabase/storage';
 
 // PUT - Update a product
@@ -30,19 +29,11 @@ export async function PUT(
     if (imageFiles && imageFiles.length > 0 && imageFiles[0].size > 0) {
       try {
         console.log('Uploading images for update:', imageFiles.length, 'files');
-        imageUrls = await uploadMultipleToCloudinary(imageFiles);
-        console.log('Images uploaded successfully to Cloudinary for update:', imageUrls);
+        imageUrls = await uploadMultipleToSupabaseStorage(imageFiles);
+        console.log('Images uploaded successfully to Supabase Storage for update:', imageUrls);
       } catch (error) {
-        console.error('Error uploading images to Cloudinary:', error);
-        console.log('Falling back to Supabase Storage...');
-        
-        try {
-          imageUrls = await uploadMultipleToSupabaseStorage(imageFiles);
-          console.log('Images uploaded successfully to Supabase Storage for update:', imageUrls);
-        } catch (supabaseError) {
-          console.error('Error uploading images to Supabase Storage:', supabaseError);
-          throw new Error(`Image upload failed: Both Cloudinary and Supabase Storage failed. Cloudinary: ${error instanceof Error ? error.message : 'Unknown error'}, Supabase: ${supabaseError instanceof Error ? supabaseError.message : 'Unknown error'}`);
-        }
+        console.error('Error uploading images to Supabase Storage:', error);
+        throw new Error(`Image upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     } else {
       // Keep existing images or use placeholder

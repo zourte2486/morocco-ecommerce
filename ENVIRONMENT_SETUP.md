@@ -12,12 +12,10 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 ```
 
-### Cloudinary Configuration (Optional - will fallback to Supabase Storage)
+### Vercel Blob Storage Configuration
 
 ```env
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-CLOUDINARY_API_KEY=your_cloudinary_api_key
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+BLOB_READ_WRITE_TOKEN=your_vercel_blob_token
 ```
 
 ## How to Get These Values
@@ -30,22 +28,23 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 4. Copy the Project URL and anon/public key
 5. Copy the service_role key (keep this secret!)
 
-### Cloudinary (Optional)
+### Vercel Blob Storage
 
-1. Go to [cloudinary.com](https://cloudinary.com)
+1. Go to [vercel.com](https://vercel.com)
 2. Sign up for a free account
-3. Go to Dashboard
-4. Copy your Cloud Name, API Key, and API Secret
+3. Create a new project or select existing one
+4. Go to Settings > Environment Variables
+5. Add `BLOB_READ_WRITE_TOKEN` with your blob token
 
 ## Fallback System
 
 The application now has a fallback system:
 
-1. **First**: Tries to upload images to Cloudinary
-2. **If Cloudinary fails**: Automatically falls back to Supabase Storage
+1. **First**: Tries to upload images to Vercel Blob
+2. **If Vercel Blob fails**: Automatically falls back to Supabase Storage
 3. **If both fail**: Shows a clear error message
 
-This means your app will work even if Cloudinary is not configured!
+This means your app will work even if Vercel Blob is not configured!
 
 ## Testing
 

@@ -58,7 +58,7 @@ export async function deleteFromVercelBlob(url: string): Promise<void> {
 }
 
 // List images in a folder
-export async function listVercelBlobImages(folder: string = 'morocco-ecommerce'): Promise<any[]> {
+export async function listVercelBlobImages(folder: string = 'morocco-ecommerce'): Promise<Array<{ url: string; pathname: string; size: number; uploadedAt: Date }>> {
   try {
     console.log('Listing images in Vercel Blob folder:', folder);
     

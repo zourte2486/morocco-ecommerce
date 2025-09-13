@@ -8,7 +8,7 @@ Your `.env` file is already configured with:
 
 - Supabase URL and keys
 - App configuration
-- No Cloudinary needed (using Supabase Storage)
+- Vercel Blob Storage (with Supabase Storage fallback)
 
 ### 2. Database Setup
 
@@ -52,7 +52,7 @@ src/
 - [x] **Styling**: Tailwind CSS with honey theme
 - [x] **Database**: Supabase with PostgreSQL
 - [x] **Authentication**: Admin-only access
-- [x] **Image Storage**: Supabase Storage
+- [x] **Image Storage**: Vercel Blob (with Supabase Storage fallback)
 - [x] **Forms**: React Hook Form + Zod validation
 - [x] **UI Components**: shadcn/ui + Radix UI
 - [x] **Toast Notifications**: Arabic notifications

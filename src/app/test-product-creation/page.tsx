@@ -3,7 +3,8 @@
 import { useState } from 'react';
 
 export default function TestProductCreation() {
-  const [testResults, setTestResults] = useState<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [testResults, setTestResults] = useState<Record<string, any> | null>(null);
   const [loading, setLoading] = useState(false);
 
   const testVercelBlobConfig = async () => {
@@ -12,7 +13,7 @@ export default function TestProductCreation() {
       const response = await fetch('/api/test-vercel-blob');
       const data = await response.json();
       setTestResults({ vercelBlob: data });
-    } catch (error) {
+    } catch {
       setTestResults({ vercelBlob: { error: 'Failed to test Vercel Blob config' } });
     }
     setLoading(false);

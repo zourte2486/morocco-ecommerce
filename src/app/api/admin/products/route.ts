@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { uploadMultipleToVercelBlob } from '@/lib/vercel-blob';
 import { uploadMultipleToSupabaseStorage } from '@/lib/supabase/storage';
 
 // GET - Fetch all products
@@ -56,21 +55,13 @@ export async function POST(request: NextRequest) {
     if (imageFiles && imageFiles.length > 0 && imageFiles[0].size > 0) {
       try {
         console.log('Uploading images:', imageFiles.length, 'files');
-        imageUrls = await uploadMultipleToVercelBlob(imageFiles);
-        console.log('Images uploaded successfully to Vercel Blob:', imageUrls);
+        imageUrls = await uploadMultipleToSupabaseStorage(imageFiles);
+        console.log('Images uploaded successfully to Supabase Storage:', imageUrls);
       } catch (error) {
-        console.error('Error uploading images to Vercel Blob:', error);
-        console.log('Falling back to Supabase Storage...');
-        
-        try {
-          imageUrls = await uploadMultipleToSupabaseStorage(imageFiles);
-          console.log('Images uploaded successfully to Supabase Storage:', imageUrls);
-        } catch (supabaseError) {
-          console.error('Error uploading images to Supabase Storage:', supabaseError);
-          return NextResponse.json({ 
-            error: `Image upload failed: Both Vercel Blob and Supabase Storage failed. Vercel Blob: ${error instanceof Error ? error.message : 'Unknown error'}, Supabase: ${supabaseError instanceof Error ? supabaseError.message : 'Unknown error'}` 
-          }, { status: 500 });
-        }
+        console.error('Error uploading images to Supabase Storage:', error);
+        return NextResponse.json({ 
+          error: `Image upload failed: ${error instanceof Error ? error.message : 'Unknown error'}` 
+        }, { status: 500 });
       }
     } else {
       // Use placeholder if no images

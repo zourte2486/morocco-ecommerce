@@ -36,7 +36,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     // Auto hide after duration (default 5 seconds, loading toasts don't auto-hide)
     if (toast.type !== 'loading' && toast.duration !== 0) {
       setTimeout(() => {
-        hideToast(id);
+        setToasts(prev => prev.filter(t => t.id !== id));
       }, toast.duration || 5000);
     }
 
@@ -57,7 +57,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
   const showLoading = useCallback((title: string, message?: string) => {
     return showToast({ type: 'loading', title, message, duration: 0 });
-  }, [showToast, hideToast]);
+  }, [showToast]);
 
   return (
     <ToastContext.Provider value={{ toasts, showToast, hideToast, showSuccess, showError, showLoading }}>
